@@ -1,0 +1,7 @@
+# Ignore Python compilation folders
+__pycache__/
+*.pyc
+
+# Ignore OS-specific files 
+.DS_Store
+Thumbs.db

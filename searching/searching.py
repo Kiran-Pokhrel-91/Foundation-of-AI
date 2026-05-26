@@ -1,6 +1,5 @@
 import sys
 import heapq
-from collections import deque
 
 class Node:
     def __init__(self, state, parent, action):
@@ -73,18 +72,7 @@ class GreedyFrontier:
 
 
 # A* Frontier
-class AStarFrontier:
-    def __init__(self, goal):
-        self.frontier = []
-        self.goal = goal
-        self.counter = 0
-
-    # Manhattan Distance
-    def heuristic(self, state):
-        x1, y1 = state
-        x2, y2 = self.goal
-        return abs(x1 - x2) + abs(y1 - y2)
-
+class AStarFrontier(GreedyFrontier):
     # path cost g(n)
     def path_cost(self, node):
         cost = 0
@@ -102,18 +90,6 @@ class AStarFrontier:
             (f, self.counter, node)
         )
         self.counter += 1
-
-    def contains_state(self, state):
-        return any(node.state == state for _, _, node in self.frontier)
-
-    def empty(self):
-        return len(self.frontier) == 0
-
-    def remove(self):
-        if self.empty():
-            raise Exception("Empty Frontier")
-        _, _, node = heapq.heappop(self.frontier)
-        return node
 
 
 # MAZE CLASS
@@ -190,15 +166,10 @@ class Maze:
         ]
 
         result = []
-
         for action, (r, c) in candidates:
-
             if 0 <= r < self.height and 0 <= c < self.width:
-
                 if not self.walls[r][c]:
-
                     result.append((action, (r, c)))
-
         return result
 
    # solve function to solve maize
@@ -253,7 +224,7 @@ class Maze:
 
 if len(sys.argv) != 3:
     sys.exit("Usage: python maze.py maze.txt algorithm" )
-filename = sys.argv[1]
+filename = sys.argv[1] 
 algorithm = sys.argv[2]
 
 m = Maze(filename)
